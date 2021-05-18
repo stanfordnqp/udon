@@ -1,3 +1,4 @@
+# Purpose
 
 We want to connect the worlds of
 - __conventional design__: waveguides, rings, gratings, and other standardized photonic components manually parameterized using _polygons_ in GDSII format, and
