@@ -16,6 +16,7 @@ def raster(device, spec, x, y):
   Returns:
     `jax.DeviceArray` of raster values of the same shape as `x`.
   """
+  x, y = np.broadcast_arrays(x, y)
   poly_rvals = _polygon_raster(filter_raster(device), spec, x, y)
   rdev_rvals = _device_raster(device, spec, x, y)
   return np.max(np.stack([poly_rvals, rdev_rvals]), axis=0)

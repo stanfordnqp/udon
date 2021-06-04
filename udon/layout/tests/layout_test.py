@@ -75,43 +75,36 @@ class TestLayout(unittest.TestCase):
   def test_raster(self):
     """Tests that rastering works."""
     d = _make_phidl(_diag_sine(1), raster_spec=(0, 0))
-    x, y = np.meshgrid(np.arange(-5, 15, 0.1), np.arange(-5, 15, 0.1))
+    x, y = np.ogrid[-5:15:0.1, -5:15:0.1]
     self.assertAlmostEqual(np.sum(layout.raster(d, (0, 0), x, y)), 5544.1113)
 
   def test_raster_no_derastered_polygons(self):
     """Tests rastering when `RasterDevice`s produce no derastered polygons."""
     d = _make_phidl(_diag_sine(-0.1), raster_spec=(0, 0))
-    x, y = np.meshgrid(np.arange(-5, 15, 0.1), np.arange(-5, 15, 0.1))
+    x, y = np.ogrid[-5:15:0.1, -5:15:0.1]
     self.assertAlmostEqual(np.sum(layout.raster(d, (0, 0), x, y)), 5179.7607)
 
   def test_raster_no_raster_devices(self):
     """Tests rastering when no `RasterDevice` objects are selected."""
     d = _make_phidl(_diag_sine(1), raster_spec=(0, 1))
-    x, y = np.meshgrid(np.arange(-5, 15, 0.1), np.arange(-5, 15, 0.1))
+    x, y = np.ogrid[-5:15:0.1, -5:15:0.1]
     self.assertAlmostEqual(np.sum(layout.raster(d, (0, 0), x, y)), 5046)
 
   def test_raster_no_polygons(self):
     """Tests rastering when no polygons are selected."""
     d = _make_phidl(_diag_sine(1), raster_spec=(0, 1))
-    x, y = np.meshgrid(np.arange(-5, 15, 0.1), np.arange(-5, 15, 0.1))
-    self.assertAlmostEqual(np.sum(layout.raster(d, (0, 1), x, y)), 498.11142)
+    x, y = np.ogrid[-5:15:0.1, -5:15:0.1]
+    self.assertAlmostEqual(np.sum(layout.raster(d, (0, 1), x, y)), 498.11148)
 
   def test_gradient(self):
     def loss(offset):
-      x, y = np.meshgrid(np.arange(-5, 15, 0.1), np.arange(-5, 15, 0.1))
+      x, y = np.ogrid[-5:15:0.1, -5:15:0.1]
       d = _make_phidl(_diag_sine(offset))
       return np.sum(layout.raster(d, (0, 0), x, y))
 
     loss_grad = jax.grad(loss)
     self.assertAlmostEqual(loss_grad(1.0), 500.5)
 
-  def test_polygon_sdf(self):
-      self.assertEqual(layout.polygon_sdf(
-          np.array([(0, 0), (1, 1), (2, 0)]), np.array([-1]), np.array([0])), 1.)
-      self.assertEqual(layout.polygon_sdf(
-          np.array([(0, 0), (1, 1), (2, 0)]), np.array([1]), np.array([0.2])), -0.2)
-      self.assertEqual(layout.polygon_sdf(
-          np.array([(0, 0), (1, 1), (2, 0)]), np.array([1]), np.array([2])), 1.)
 
-      if __name__ == '__main__':
-          unittest.main()
+if __name__ == '__main__':
+  unittest.main()
