@@ -109,11 +109,6 @@ may only need to process a fraction of the circuit of interest,
 alleviating having to deal with large numerical arrays with correspondingly
 large memory overheads.
 
-## `layout.polygon_sdf()`
-
-Lastly, `polygon_sdf()` is also exposed in order to allow for the computation
-of signed distance functions for polygons, which can be useful for 3D visualization.
-
 # Future extensions
 While we have described is a simple, low-level API to allow for the integration of inverse designed (or raster parameterized) devices to be integrated in a traditional photonics circuit workflow, we anticipate a number of higher-level abstractions will immediately be useful such as 
 
